@@ -3,14 +3,15 @@ import { LinkContainer } from "react-router-bootstrap";
 const CategoryCardComponent = ({ category, idx }) => {
 
     const images = [
-        "/images/tablets-category.png",
-        "/images/monitors-category.png",
-        "/images/games-category.png",
-        "/images/tablets-category.png",
-        "/images/tablets-category.png",
-        "/images/tablets-category.png",
-        "/images/tablets-category.png",
-        "/images/tablets-category.png",
+        "/images/suv.jpg",
+        "/images/hatchback.jpg",
+        "/images/crossover.jpg",
+        "/images/convetible.jpg",
+        "/images/sedan.jpg",
+        "/images/sports.jpg",
+        "/images/coupe.jpg",
+        "/images/minivan.jpg",
+        "/images/stationwagon.jpg",
 
 
     ]

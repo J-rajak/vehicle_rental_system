@@ -32,7 +32,7 @@ const AdminProductsPage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {[{ name: "Panasonic", price: "$345", category: "TV" }, { name: "Lenovo", price: "$3242", category: "Laptops" }, { name: "GTA 10", price: "$343", category: "Games" },].map((item, idx) => (
+                        {[{ name: "Sedan", price: "$999", category: "Sedan" }, { name: "Stationwagon", price: "$3242", category: "stationwagon" }, { name: "Racingcar", price: "$3434", category: "Sportscar" },].map((item, idx) => (
                             <tr key={idx}>
                                 <td>{idx + 1}</td>
                                 <td>{item.name}</td>

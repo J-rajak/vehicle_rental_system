@@ -3,13 +3,15 @@ import CategoryCardComponent from "../components/CategoryCardComponent";
 import { Row, Container } from 'react-bootstrap';
 const HomePage = () => {
     const categories = [
-        "Tablets",
-        "Games",
-        "Printers",
-        "Software",
-        "Cameras",
-        "Books",
-        "Videos",
+        "SUV",
+        "Hatchback",
+        "Crossover",
+        "Convertible",
+        "Sedan",
+        "Sports",
+        "Coupe",
+        "Minivan",
+        "Stationwagon",
     ];
 
     return (

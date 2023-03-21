@@ -6,11 +6,11 @@ const CartItemComponent = () => {
             <ListGroup.Item>
                 <Row>
                     <Col md={2}>
-                        <Image crossOrigin="anonymous" src="/images/games-category.png" fluid />
+                        <Image crossOrigin="anonymous" src="/images/sedan.jpg" fluid />
                     </Col>
                     <Col md={2}>
-                        Logitech series <br />
-                        Gaming mouse
+                        Sedan <br />
+                        Best offer
                     </Col>
                     <Col md={2}>
                         <b>$56</b>
