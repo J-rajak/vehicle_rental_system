@@ -13,7 +13,7 @@ const prisma = require("../Db");
             }
         })
         res.status(200);
-        res.json({"message":`${vehicle}`});
+        res.json({"message":"Vehicle added",sucess:true});
     }catch(e){
         res.status(400);
         res.json({"message":`${e}`});
@@ -60,8 +60,7 @@ const prisma = require("../Db");
     try{
         const vehicles = await prisma.vehicle.findMany();
         res.status(200);
-        console.log(vehicles.length);
-        res.json({vehicles});
+        res.json({vehicles,Sucess:true,"count":vehicles.length});
     }catch(e){
         res.status(400);
         res.json({"message":`${e}`});

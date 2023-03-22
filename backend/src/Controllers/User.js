@@ -25,7 +25,7 @@ const {
     res.json({ sucess: true, message: "user created", token });
   } catch (e) {
     res.status(400);
-    res.json({ message: `${e}` });
+    res.json({ sucess: false,message: "failed to create user" });
   }
 };
 
@@ -51,7 +51,7 @@ const {
   res.json({ token, message: "Login Sucessful", sucess: true });
 } catch (error) {
   res.status(404);
-  res.json({ message: "Username doesnot exist", sucess: false });
+  res.json({ message: "Username not found", sucess: false });
 }
 };
 
@@ -64,7 +64,7 @@ const {
       },
       data: {
         username: req.body.username,
-        password: req.body.password,
+        // password: await hashPassword(req.body.password),
         email: req.body.email,
         phonenumber: req.body.phonenumber,
         updatedAt: new Date().toLocaleString(),
@@ -76,7 +76,7 @@ const {
       message: `Data updated for user with id ${req.params.id}`,
     });
   } catch (e) {
-    res.status(400);
+    res.status(404);
     res.json({
       Sucess: false,
       message: `user with id ${req.params.id} Not found`,
@@ -84,7 +84,43 @@ const {
   }
 };
 
-//Get user by id
+// Change password
+  const updatePassword = async (req, res) => {
+  try {
+    const oldPassword = await prisma.user.findUnique({
+      where: {
+        id: req.params.id
+      },
+    });
+    if(await comparePasswords(req.body.oldpassword,oldPassword.password)){
+    const user = await prisma.user.update({
+      where: {
+        id: req.params.id,
+      },
+      data: {
+        password: await hashPassword(req.body.password),
+        updatedAt: new Date().toLocaleString(),
+      },
+    });
+    res.status(200);
+    res.json({
+      Sucess: true,
+      message: `Password updated for user with id ${req.params.id}`,
+    });
+  }else{
+    res.status(401);
+    res.json({
+      Sucess: false,
+      message: `Password doesnot match`,
+    })
+  }} catch (e) {
+    res.status(404);
+    res.json({
+      Sucess: false,
+      message: `user with id ${req.params.id} Not found`,
+    });
+  }}
+  //Get user by id
  const findUser = async (req, res) => {
   let user = null;
   try {
@@ -101,12 +137,28 @@ const {
   }
 };
 
+// Delete user by id
+
+const deleteuser = (req,res) =>{
+  try{
+    const user = prisma.user.delete({
+      where:{
+        id:req.params.id
+      }
+    });
+    res.status(200);
+    res.json({message:"user deleted",sucess:true});
+  }catch(e){
+    res.status(404);
+    res.json({message:"user not found",sucess:false});
+  }
+}
+
 // Get all users
  const allUser = async (req, res) => {
   try {
     const users = await prisma.user.findMany();
     res.status(200);
-    console.log(users.length);
     res.send({ users, sucess: true, Count: users.length });
   } catch (e) {
     res.status(400);
@@ -172,7 +224,35 @@ const {
   }
 };
 
-module.exports ={createUser,signinUser,updateUser,findUser,allUser,postReview,updateReview,getReview}
+//get all reviews 
+const getAllReviews = async (req, res) => {
+  try{
+    const reviews=prisma.reviews.findMany();
+    res.status(200);
+    res.json({reviews,Sucess:true});
+  }catch(e){
+    res.status(400);
+    res.json({Sucess:false,message:`${e} No Reviews Found`});
+  }
+}
+
+//delete reviews
+const deleteReview = async (req, res) => {
+  try{
+    const review=prisma.reviews.delete({
+      where:{
+        id:req.params.id
+      }
+    });
+    res.status(200);
+    res.json({Sucess:true,message:`Review Deleted`});
+  }
+  catch(e){
+    res.status(404);
+    res.json({Sucess:false,message:`${e} Review Not Found`});
+  }}
+
+module.exports ={createUser,signinUser,updateUser,updatePassword,findUser,deleteuser,allUser,postReview,updateReview,getReview,getAllReviews,deleteReview}
 
 /* 
   id   String @id @default(auto()) @map("_id") @db.ObjectId
