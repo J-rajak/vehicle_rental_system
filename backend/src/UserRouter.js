@@ -1,10 +1,18 @@
 const Router = require("express");
-const {findUser, getReview, updateUser} = require("./Controllers/User");
+const {findUser, updateUser, updatePassword, deleteuser, getReview ,postReview, updateReview, deleteReview} = require("./Controllers/User");
 
 
 const Userrouter = Router();
 
-Userrouter.post("/update",updateUser);
+//user routes
 Userrouter.get("/find/:id",findUser);
-Userrouter.post("/review",getReview);
+Userrouter.put("/update/:id",updateUser);
+Userrouter.put("/updatepassword/:id",updatePassword);
+Userrouter.delete("/delete/:id",deleteuser);
+
+// user review routes
+Userrouter.post("/review/post",postReview);
+Userrouter.post("/review/own",getReview);
+Userrouter.put("/review/update/:id",updateReview);
+Userrouter.delete("/review/delete/:id",deleteReview);
 module.exports = Userrouter;
