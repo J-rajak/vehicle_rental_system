@@ -208,14 +208,19 @@ const deleteuser = (req,res) =>{
   }
 };
 
-  //review
+  //get a review of a single user
  const getReview = async (req, res) => {
   try {
     const review = await prisma.reviews.findMany({
       where: {
-        id: req.params.id,
+        userId: req.params.userId,
       },
     });
+    if(review.length == 0){
+      res.status(204);
+      res.json({Sucess:false,message:`No Reviews to display`});
+      return
+    }
     res.status(200);
     res.json({ Sucess: true, message: `${review}` });
   } catch (e) {
@@ -228,6 +233,11 @@ const deleteuser = (req,res) =>{
 const getAllReviews = async (req, res) => {
   try{
     const reviews=prisma.reviews.findMany();
+    if(reviews.length == 0){
+      res.status(204);
+      res.json({Sucess:false,message:`No Reviews to display`});
+      return
+    }
     res.status(200);
     res.json({reviews,Sucess:true});
   }catch(e){
@@ -241,7 +251,7 @@ const deleteReview = async (req, res) => {
   try{
     const review=prisma.reviews.delete({
       where:{
-        id:req.params.id
+        id:req.params.id  
       }
     });
     res.status(200);

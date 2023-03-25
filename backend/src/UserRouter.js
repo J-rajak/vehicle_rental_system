@@ -11,8 +11,8 @@ Userrouter.put("/updatepassword/:id",updatePassword);
 Userrouter.delete("/delete/:id",deleteuser);
 
 // user review routes
-Userrouter.post("/review/post",postReview);
-Userrouter.post("/review/own/:id",getReview);
-Userrouter.put("/review/update/:id",updateReview);
-Userrouter.delete("/review/delete/:id",deleteReview);
+Userrouter.get("/review/own/:id",getReview);
+Userrouter.post("/review",postReview);
+Userrouter.put("/review/:id",updateReview);
+Userrouter.delete("/review/:id",deleteReview);
 module.exports = Userrouter;
