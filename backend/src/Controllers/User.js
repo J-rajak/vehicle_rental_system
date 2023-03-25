@@ -34,7 +34,7 @@ const {
   try {
   const user = await prisma.user.findUnique({
     where: {
-      username: req.body.username,
+      email: req.body.email,
     },
   });
 
@@ -51,7 +51,7 @@ const {
   res.json({ token, message: "Login Sucessful", sucess: true });
 } catch (error) {
   res.status(404);
-  res.json({ message: "Username not found", sucess: false });
+  res.json({ message: "Email not found", sucess: false });
 }
 };
 
