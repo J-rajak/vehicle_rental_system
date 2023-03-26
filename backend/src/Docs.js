@@ -138,11 +138,17 @@ const swaggerJSDoc = require("swagger-jsdoc");
  *        schema:
  *          type: object
  *          required:
+ *            - firstname
+ *            - lastname
  *            - username
  *            - password
  *            - email
  *            - phonenumber
  *          properties:
+ *              firstname:
+ *                  type: string
+ *              lastname:
+ *                  type: string
  *              username:
  *                  type: string
  *              password:

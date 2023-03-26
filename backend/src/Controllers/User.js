@@ -12,6 +12,8 @@ const {
     const hash = await hashPassword(req.body.password);
     const user = await prisma.user.create({
       data: {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         username: req.body.username,
         password: hash,
         email: req.body.email,
