@@ -12,8 +12,6 @@ const CategoryCardComponent = ({ category, idx }) => {
         "/images/coupe.jpg",
         "/images/minivan.jpg",
         "/images/stationwagon.jpg",
-
-
     ]
     return (
         <Card>

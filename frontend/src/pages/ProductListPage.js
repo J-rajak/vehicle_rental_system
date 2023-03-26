@@ -21,7 +21,7 @@ const ProductListPage = () => {
                         </ListGroup.Item>
                         <ListGroup.Item><RatingFilterComponent /></ListGroup.Item>
                         <ListGroup.Item><CategoryFilterComponent /></ListGroup.Item>
-                        <ListGroup.Item><AttributesFilterComponent /></ListGroup.Item>
+                        {/* <ListGroup.Item><AttributesFilterComponent /></ListGroup.Item> */}
                         <ListGroup.Item>
                             <Button variant="primary">Filter</Button>
                             <Button variant="danger">Reset Filters</Button>
@@ -32,7 +32,7 @@ const ProductListPage = () => {
                     {Array.from({ length: 5 }).map((_, idx) => (
                         <ProductForListComponent 
                         key={idx} 
-                        images={["games", "monitors", "tablets", "games", "monitors"]}
+                        images={["car1", "car2", "car3", "car4", "car5"]}
                         idx={idx}
                         />
                     ))}

@@ -61,6 +61,29 @@ const RegisterPage = () => {
               />
               <Form.Control.Feedback type="invalid">Please enter a valid email address</Form.Control.Feedback>
             </Form.Group>
+
+            <Form.Group className="mb-3" controlId="validationFormik05">
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control
+                name="phone"
+                required
+                type="text"
+                placeholder="Enter your number"
+              />
+              <Form.Control.Feedback type="invalid">Please enter your phone number</Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                name="name"
+                required
+                type="text"
+                placeholder="Enter a username"
+              />
+              <Form.Control.Feedback type="invalid">Please enter a username</Form.Control.Feedback>
+            </Form.Group>
+
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control

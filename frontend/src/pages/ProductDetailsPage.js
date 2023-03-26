@@ -26,19 +26,19 @@ const ProductDetailsPage = () => {
             <Row className="mt-5">
                 <Col style={{zIndex: 1}} md={4}>
                     <div id="first">
-                        <Image crossOrigin="anonymous" fluid src="/images/games-category.png" />
+                        <Image crossOrigin="anonymous" fluid src="/images/car1.jpg" />
                     </div>
                     <br />
                     <div id="second">
-                        <Image fluid src="/images/monitors-category.png" />
+                        <Image fluid src="/images/car2.jpg" />
                     </div>
                     <br />
                     <div id="third">
-                        <Image fluid src="/images/tablets-category.png" />
+                        <Image fluid src="/images/car3.jpg" />
                     </div>
                     <br />
                     <div id="fourth">
-                        <Image fluid src="/images/games-category.png" />
+                        <Image fluid src="/images/car4.jpg" />
                     </div>
                     <br />
 
