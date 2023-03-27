@@ -155,7 +155,7 @@ const swaggerJSDoc = require("swagger-jsdoc");
  *                  type: string
  *              email:
  *                  type: string
- *              phonenuber:
+ *              phonenumber:
  *                  type: string
  *              
  *     responses:

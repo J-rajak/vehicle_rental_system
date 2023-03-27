@@ -27,7 +27,7 @@ const {
     res.json({ sucess: true, message: "user created", token });
   } catch (e) {
     res.status(400);
-    res.json({ sucess: false,message: "failed to create user" });
+    res.json({ sucess: false,message: "failed to create user",e:e.message });
   }
 };
 

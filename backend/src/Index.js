@@ -15,8 +15,14 @@ const swaggerOptions = {
         info: {
             title: "API Documentation",
             description: "Car Renting System API Documentation",
+            version: "1.0.2",
             contact: {
-                name: "Car Renting System"
+                name: "Car Renting System",
+                email: "np03cs4s220015@heraldcollege.edu.np"
+            },
+            license:{
+                name: "Apache 2.0",
+                url: "http://www.apache.org/licenses/LICENSE-2"
             },
             servers: ["http://localhost:"+port]
         }    
