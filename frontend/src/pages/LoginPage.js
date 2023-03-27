@@ -7,6 +7,20 @@ const LoginPage = () => {
 
 
     const handleSubmit = (event) => {
+        event.preventDefault();
+      let password=document.querySelector("input[name=password]").value;
+      let email=document.querySelector("input[name=email]").value;
+        let name ={email,password}
+        console.log(name);
+        fetch("http://localhost:5175/signin",{
+            method:"POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(name)
+        })
+        .then(response => response.json())
+        .then(data => {alert(data.message); 
+            console.log(data.token);
+            document.cookie("token="+data.token);})
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
@@ -14,6 +28,7 @@ const LoginPage = () => {
         }
 
         setValidated(true);
+
     };
     return (
         <Container>
@@ -28,6 +43,7 @@ const LoginPage = () => {
                                 required
                                 type="email"
                                 placeholder="Enter your email"
+                                // onChange={(e) => {email = e.target.value}}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -37,6 +53,7 @@ const LoginPage = () => {
                                 required
                                 type="password"
                                 placeholder="Password"
+                                // onChange={(e) => {password = e.target.value}}
                             />
                         </Form.Group>
 

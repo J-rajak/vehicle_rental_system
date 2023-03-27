@@ -6,17 +6,39 @@ const RegisterPage = () => {
   const [validated, setValidated] = useState(false);
 
   const onChange = () => {
-    const password = document.querySelector("input[name=password]")
-    const confirm = document.querySelector("input[name=confirmPassword]")
+    const password1 = document.querySelector("input[name=password]")
+    const confirmpass = document.querySelector("input[name=confirmPassword]")
 
-    if (confirm.value === password.value) {
-      confirm.setCustomValidity("")
+    if (confirmpass.value === password1.value) {
+      confirmpass.setCustomValidity("")
+      password = confirmpass.value
+      console.log(password);
     } else {
-      confirm.setCustomValidity("Passwords do not match")
+      confirmpass.setCustomValidity("Passwords do not match")
+      console.log("not match");
     }
   }
 
   const handleSubmit = (event) => {
+      event.preventDefault();
+      
+      let username=document.querySelector("input[name=username]").value;
+      let email=document.querySelector("input[name=email]").value;
+      let firstname=document.querySelector("input[name=firstname]").value;
+      let lastname=document.querySelector("input[name=lastName]").value;
+      let phonenumber=document.querySelector("input[name=phone]").value;
+      let name ={firstname,lastname,username,password,email,phonenumber}
+      console.log(name);
+      fetch("http://localhost:5175/signup",{
+          method:"POST",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(name)
+      })
+      .then(response => response.json())
+      .then(data => {alert(data.message); 
+          console.log(data.token);
+          document.cookie("token="+data.token);})
+
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -25,6 +47,8 @@ const RegisterPage = () => {
 
     setValidated(true);
   };
+  
+  let password="";
   return (
     <Container>
       <Row className="mt-5 justify-content-md-center">
@@ -37,7 +61,8 @@ const RegisterPage = () => {
                 required
                 type="text"
                 placeholder="Enter your first name"
-                name="name"
+                name="firstname"
+                // onchange={(e) => {firstname = e.target.value}}
               />
               <Form.Control.Feedback type="invalid">Please enter your first name</Form.Control.Feedback>
             </Form.Group>
@@ -48,6 +73,7 @@ const RegisterPage = () => {
                 type="text"
                 placeholder="Enter your last name"
                 name="lastName"
+                // onchange={(e) => {lastname = e.target.value}}
               />
               <Form.Control.Feedback type="invalid">Please enter your last name</Form.Control.Feedback>
             </Form.Group>
@@ -58,6 +84,7 @@ const RegisterPage = () => {
                 required
                 type="email"
                 placeholder="Enter your email"
+                // onchange={(e) => {email = e.target.value}}
               />
               <Form.Control.Feedback type="invalid">Please enter a valid email address</Form.Control.Feedback>
             </Form.Group>
@@ -69,6 +96,7 @@ const RegisterPage = () => {
                 required
                 type="text"
                 placeholder="Enter your number"
+                // onchange={(e) => {phonenumber = e.target.value}}
               />
               <Form.Control.Feedback type="invalid">Please enter your phone number</Form.Control.Feedback>
             </Form.Group>
@@ -76,10 +104,11 @@ const RegisterPage = () => {
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label>Username</Form.Label>
               <Form.Control
-                name="name"
+                name="username"
                 required
                 type="text"
                 placeholder="Enter a username"
+                // onchange={(e) => {username = e.target.value}}
               />
               <Form.Control.Feedback type="invalid">Please enter a username</Form.Control.Feedback>
             </Form.Group>
