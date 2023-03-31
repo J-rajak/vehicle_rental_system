@@ -5,31 +5,11 @@ const cors = require('cors')
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');    
 
-// import app from './Server'
 const app = require('./Server');
-const port = 5175
+const port = process.env.PORT //port where server is running
 
 // swager object
-const swaggerOptions = {
-    swaggerDefinition: {
-        info: {
-            title: "API Documentation",
-            description: "Car Renting System API Documentation",
-            version: "1.0.2",
-            contact: {
-                name: "Car Renting System",
-                email: "np03cs4s220015@heraldcollege.edu.np"
-            },
-            license:{
-                name: "Apache 2.0",
-                url: "http://www.apache.org/licenses/LICENSE-2"
-            },
-            servers: ["http://localhost:"+port]
-        }    
-},
-apis:["./src/Docs.js"]
-};
-
+const swaggerOptions = require('./Swagger');
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs",swaggerUi.serve,swaggerUi.setup(swaggerDocs));
 

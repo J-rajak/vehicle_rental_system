@@ -91,12 +91,35 @@ const swaggerJSDoc = require("swagger-jsdoc");
  *              400:
  *                  description: failure message
  * 
+ * /user/find/{id}:
+ *      get:
+ *          summary: get a sigle user data
+ *          description: get a sigle user data
+ *          tags:
+ *              - user
+ *          security:
+ *             - Bearer: []
+ *          parameters:
+ *              - name: id
+ *                in: path    
+ *                description: id of the user 
+ *                required: true  
+ *                schema:
+ *                  type: string
+ *          responses:
+ *              200:
+ *                  description: sucess message
+ *              404:
+ *                  description: failure message
+ * 
  * /user/review/{userid}:
  *      get:
  *          summary: get review of single user
  *          description: get reviews of a single user
  *          tags:
  *              - review
+ *          security:
+ *             - Bearer: []
  *          parameters:
  *              - name: userId
  *                in: path    
@@ -238,6 +261,37 @@ const swaggerJSDoc = require("swagger-jsdoc");
 
 /**
  * @swagger
+ * /admin/vehicle/update/:id:
+ *  put:
+ *     summary: add vechile data
+ *     description: Use to create a new user
+ *     consumes:
+ *      - application/json
+ *     parameters:
+ *      - in: body
+ *        name: user
+ *        description : user to create
+ *        schema:
+ *          type: object
+ *          properties:
+ *              name:
+ *                  type: string
+ *              model:
+ *                  type: string
+ *              licenseplate:
+ *                  type: string
+ *              type:
+ *                  type: string
+ *     responses:
+ *      201:
+ *         description: Sucess message
+ *      400:    
+ *          description: failure message 
+ *     
+ *  */
+
+/**
+ * @swagger
  * 
  * /user/review:
  *  post:
@@ -245,6 +299,8 @@ const swaggerJSDoc = require("swagger-jsdoc");
  *     description: record a user review    
  *     tags: 
  *         - review
+ *     security:
+ *         - Bearer: []
  *     consumes:
  *      - application/json
  *     parameters:
@@ -294,6 +350,8 @@ const swaggerJSDoc = require("swagger-jsdoc");
  *          description: delete a user data
  *          tags:
  *              - user
+ *          security:
+ *              - Bearer: []
  *          parameters:
  *              - name: id
  *                in: path    
@@ -327,6 +385,8 @@ const swaggerJSDoc = require("swagger-jsdoc");
  *          description: update user review
  *          tags:
  *              - review
+ *          security:
+ *              - Bearer: []
  *          parameters:
  *              - name: id
  *                in: path    
@@ -358,6 +418,8 @@ const swaggerJSDoc = require("swagger-jsdoc");
  *          description: Update user password
  *          tags:
  *              - user
+ *          security:
+ *              - Bearer: []
  *          parameters:
  *              - name: id
  *                in: path    
@@ -437,6 +499,8 @@ const swaggerJSDoc = require("swagger-jsdoc");
  *          description: delete a user data
  *          tags:
  *              - user
+ *          security:
+ *              - Bearer: []
  *          parameters:
  *              - name: id
  *                in: path    
@@ -477,6 +541,8 @@ const swaggerJSDoc = require("swagger-jsdoc");
  *          description: delete a review data
  *          tags:
  *              - review
+ *          security:
+ *              - Bearer: []
  *          parameters:
  *              - name: id
  *                in: path    

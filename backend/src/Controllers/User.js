@@ -109,12 +109,14 @@ const {
       Sucess: true,
       message: `Password updated for user with id ${req.params.id}`,
     });
+    return;
   }else{
     res.status(401);
     res.json({
       Sucess: false,
       message: `Password doesnot match`,
     })
+    return;
   }} catch (e) {
     res.status(404);
     res.json({
@@ -141,9 +143,9 @@ const {
 
 // Delete user by id
 
-const deleteuser = (req,res) =>{
+const deleteuser = async (req,res) =>{
   try{
-    const user = prisma.user.delete({
+    const user = await prisma.user.delete({
       where:{
         id:req.params.id
       }
@@ -221,7 +223,7 @@ const deleteuser = (req,res) =>{
     if(review.length == 0){
       res.status(204);
       res.json({Sucess:false,message:`No Reviews to display`});
-      return
+      return;
     }
     res.status(200);
     res.json({ Sucess: true, message: `${review}` });
@@ -234,11 +236,11 @@ const deleteuser = (req,res) =>{
 //get all reviews 
 const getAllReviews = async (req, res) => {
   try{
-    const reviews=prisma.reviews.findMany();
+    const reviews= await prisma.reviews.findMany();
     if(reviews.length == 0){
-      res.status(204);
+      res.status(202);
       res.json({Sucess:false,message:`No Reviews to display`});
-      return
+      return;
     }
     res.status(200);
     res.json({reviews,Sucess:true});
@@ -251,7 +253,7 @@ const getAllReviews = async (req, res) => {
 //delete reviews
 const deleteReview = async (req, res) => {
   try{
-    const review=prisma.reviews.delete({
+    const review= await prisma.reviews.delete({
       where:{
         id:req.params.id  
       }
@@ -264,7 +266,6 @@ const deleteReview = async (req, res) => {
     res.json({Sucess:false,message:`${e} Review Not Found`});
   }}
 
-module.exports ={createUser,signinUser,updateUser,updatePassword,findUser,deleteuser,allUser,postReview,updateReview,getReview,getAllReviews,deleteReview}
 
 /* 
   id   String @id @default(auto()) @map("_id") @db.ObjectId
@@ -281,28 +282,88 @@ module.exports ={createUser,signinUser,updateUser,updatePassword,findUser,delete
   createdAt DateTime?
   updatedAt DateTime? @updatedAt */
 
-// export const bookVehicle = async (req, res) => {
-//   try {
-//     const booking = await prisma.booked.create({
-//       data: {
-//         id: req.body.userid,
-//         username: req.body.username,
-//         driverincluded: req.body.driverincluded,
-//         carname: req.body.carname,
-//         carlicenseplate: req.body.carlicenseplate,
-//         cartype: req.body.cartype,
-//         paymentmethod: req.body.paymentmethod,
-//         dropofflocation: req.body.dropofflocation,
-//         rentedfrom: req.body.rentedfrom,
-//         rentedtill: req.body.rentedtill,
-//         createdAt: new Date().toLocaleString(),
-//         updatedAt: new Date().toLocaleString(),
-//       },
-//     });
-//     res.status(200);
-//     res.json({ message: `${booking}` });
-//   } catch (e) {
-//     res.status(400);
-//     res.json({ message: `${e}` });
-//   }
-// };
+  // booking a vehicle from the system
+ const bookVehicle = async (req, res) => {
+  try {
+    const booking = await prisma.booked.create({
+      data: {
+        id: req.body.userid,
+        username: req.body.username,
+        userphonenumber : req.body.userphonenumber,
+        driverincluded: req.body.driverincluded,
+        carname: req.body.carname,
+        carlicenseplate: req.body.carlicenseplate,
+        cartype: req.body.cartype,
+        paymentmethod: req.body.paymentmethod,
+        dropofflocation: req.body.dropofflocation,
+        rentedfrom: req.body.rentedfrom,
+        rentedtill: req.body.rentedtill,
+        createdAt: new Date().toLocaleString(),
+        updatedAt: new Date().toLocaleString(),
+      },
+    });
+    res.status(200);
+    res.json({ message: "Your car has been booked",sucess:true,Count:booking.length });
+  } catch (e) {
+    res.status(400);
+    res.json({ message: `${e}` });
+  }
+};
+
+// List of booked vehicles
+const getBookData = async ( req,res) =>{
+  try{
+  const datas= await prisma.booked.findMany();
+  if(datas.length == 0){
+    res.status(200);
+    res.json({datas,message:"No booking done",sucess: true});
+    return;
+  }
+  res.status(200);
+  res.json({datas,sucess:true});
+}catch(e){
+  res.status(501);
+  res.json({message:"something went wrong",sucess:false});
+}
+}
+
+
+const ownBookData = async ( req,res) =>{
+  let user;
+  try{
+     user=await prisma.user.findUnique({
+      where:{
+        id:req.params.id
+      }
+    })
+  }catch(e){
+    res.status(501);
+    res.json({message:"something went wrong",sucess:false});
+  }
+  if(user==null){
+    res.status(404);
+    res.json({message:"User not found",sucess:false});
+    return;
+  }
+  try{
+    const data = await prisma.booked.findMany({
+      where:{
+        userphonenumber:user.phonenumber
+      }
+    })
+    if(data.length == 0){
+      res.status(200);
+      res.json({message:"No booking done",sucess: true});
+      return;
+    }
+    res.status(200);
+    res.json({data,sucess:true,booking:data.length});
+  }catch(e){
+    res.status(501);
+    res.json({message:"something went wrong",sucess:false});
+  }
+}
+
+module.exports ={createUser,signinUser,updateUser,updatePassword,findUser,deleteuser,allUser
+  ,postReview,updateReview,getReview,getAllReviews,deleteReview,
+  bookVehicle,getBookData,ownBookData}
