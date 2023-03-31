@@ -20,7 +20,7 @@ const LoginPage = () => {
         .then(response => response.json())
         .then(data => {alert(data.message); 
             console.log(data.token);
-            document.cookie("token="+data.token);})
+            document.cookie="token="+" "+data.token})
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
@@ -34,8 +34,16 @@ const LoginPage = () => {
         <Container>
             <Row className="mt-5 justify-content-md-center">
                 <Col md={6}>
-                    <h1>Register</h1>
-                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                    <h1>Login</h1>
+                    <Form noValidate validated={validated} onSubmit={(e) =>{
+                        
+                    let emailcheck=document.querySelector("input[name=email]").checkValidity();
+                    if(emailcheck===false){
+                        e.preventDefault();
+                        alert("Email is not valid");}else{
+                            handleSubmit(e);
+                        }
+                    }}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Email Address</Form.Label>
                             <Form.Control

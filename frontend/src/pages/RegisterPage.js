@@ -54,7 +54,15 @@ const RegisterPage = () => {
       <Row className="mt-5 justify-content-md-center">
         <Col md={6}>
           <h1>Register</h1>
-          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <Form noValidate validated={validated} onSubmit={(e) =>{
+                        
+                        let emailcheck=document.querySelector("input[name=email]").checkValidity();
+                        if(emailcheck===false){
+                            e.preventDefault();
+                            alert("Email is not valid");}else{
+                                handleSubmit(e);
+                            }
+                        }}>
             <Form.Group className="mb-3" controlId="validationCustom01">
               <Form.Label>Your first name</Form.Label>
               <Form.Control
