@@ -1,5 +1,5 @@
 const Router = require("express");
-const {findUser, updateUser, updatePassword, deleteuser, getReview ,postReview, updateReview, deleteReview, bookVehicle, getBookData, ownBookData} = require("./Controllers/User");
+const {findUser, updateUser, updatePassword, deleteuser, getReview ,postReview, updateReview, deleteReview, bookVehicle, getBookData, ownBookData, cancleBooking, updateBooking} = require("./Controllers/User");
 
 
 const Userrouter = Router();
@@ -19,4 +19,6 @@ Userrouter.delete("/review/:id",deleteReview);
 // user booking routes
 Userrouter.get("/booked/:id",ownBookData);
 Userrouter.post("/book",bookVehicle);
+Userrouter.put("/booked/:id",updateBooking);
+Userrouter.delete("/booked/:id",cancleBooking);
 module.exports = Userrouter;

@@ -112,7 +112,7 @@ const swaggerJSDoc = require("swagger-jsdoc");
  *              404:
  *                  description: failure message
  * 
- * /user/review/{userid}:
+ * /user/review/own/{userid}:
  *      get:
  *          summary: get review of single user
  *          description: get reviews of a single user
@@ -223,6 +223,84 @@ const swaggerJSDoc = require("swagger-jsdoc");
 
 /**
  * @swagger
+ * /admin/signup:
+ *  post:
+ *     summary: add admin data
+ *     description: Use to create a admin entry    
+ *     tags: 
+ *         - Admin
+ *     consumes:
+ *      - application/json
+ *     parameters:
+ *      - in: body
+ *        name: admin
+ *        description : admin to create
+ *        schema:
+ *          type: object
+ *          required:
+ *            - firstname
+ *            - lastname
+ *            - username
+ *            - password
+ *            - email
+ *            - phonenumber
+ *          properties:
+ *              firstname:
+ *                  type: string
+ *              lastname:
+ *                  type: string
+ *              username:
+ *                  type: string
+ *              password:
+ *                  type: string
+ *              email:
+ *                  type: string
+ *              phonenumber:
+ *                  type: string
+ *     responses:
+ *      201:
+ *         description: Sucess message
+ *      400:    
+ *          description: failure message 
+ *     
+ *  */
+
+/**
+ * @swagger
+ * /admin/signin:
+ *  post:
+ *     summary: admin login
+ *     description: login into an admin account   
+ *     tags: 
+ *         - Admin
+ *     consumes:
+ *      - application/json
+ *     parameters:
+ *      - in: body
+ *        name: user
+ *        description : user to create
+ *        schema:
+ *          type: object
+ *          required:
+ *            - email
+ *            - password
+ *          properties:
+ *              email:
+ *                  type: string
+ *              password:
+ *                  type: string
+ *     responses:
+ *      201:
+ *         description: Sucess message
+ *      401:    
+ *          description: failure message 
+ *      404:    
+ *          description: failure message 
+ *     
+ *  */
+
+/**
+ * @swagger
  * /admin/vehicle/add:
  *  post:
  *     summary: add vehicle data
@@ -259,36 +337,6 @@ const swaggerJSDoc = require("swagger-jsdoc");
  *     
  *  */
 
-/**
- * @swagger
- * /admin/vehicle/update/:id:
- *  put:
- *     summary: add vechile data
- *     description: Use to create a new user
- *     consumes:
- *      - application/json
- *     parameters:
- *      - in: body
- *        name: user
- *        description : user to create
- *        schema:
- *          type: object
- *          properties:
- *              name:
- *                  type: string
- *              model:
- *                  type: string
- *              licenseplate:
- *                  type: string
- *              type:
- *                  type: string
- *     responses:
- *      201:
- *         description: Sucess message
- *      400:    
- *          description: failure message 
- *     
- *  */
 
 /**
  * @swagger
@@ -320,7 +368,7 @@ const swaggerJSDoc = require("swagger-jsdoc");
  *              username:
  *                  type: string
  *              rating:
- *                  type: string
+ *                  type: integer
  *              review:
  *                  type: string
  *     responses:
@@ -340,14 +388,49 @@ const swaggerJSDoc = require("swagger-jsdoc");
  * title: Put Request routes
  * description: Put Request routes of the  API
  */
+
+
+/**
+ * @swagger
+ * /admin/vehicle/update/:id:
+ *  put:
+ *     summary: add vechile data
+ *     description: Use to create a new user
+ *     consumes:
+ *      - application/json
+ *     tags:
+ *      - vehicle
+ *     parameters:
+ *      - in: body
+ *        name: user
+ *        description : user to create
+ *        schema:
+ *          type: object
+ *          properties:
+ *              name:
+ *                  type: string
+ *              model:
+ *                  type: string
+ *              licenseplate:
+ *                  type: string
+ *              type:
+ *                  type: string
+ *     responses:
+ *      201:
+ *         description: Sucess message
+ *      400:    
+ *          description: failure message 
+ *     
+ *  */
+
 /**
  * @swagger
  * 
  * paths:
  *  /user/update/{id}:
  *      put:
- *          summary: delete sigle user 
- *          description: delete a user data
+ *          summary: update sigle user 
+ *          description: update a user data
  *          tags:
  *              - user
  *          security:
@@ -366,6 +449,12 @@ const swaggerJSDoc = require("swagger-jsdoc");
  *                  type: object
  *                  properties:
  *                      username:
+ *                          type: string
+ *                      firstname:
+ *                          type: string
+ *                      lastname:
+ *                          type: string
+ *                      phonenumber:
  *                          type: string
  *                      email:
  *                          type: string        
@@ -476,6 +565,43 @@ const swaggerJSDoc = require("swagger-jsdoc");
  *          responses:
  *              200:
  *                  description: sucess message
+ *              404:
+ *                  description: failure message
+ * 
+ *  /admin/update/{id}:
+ *      put:
+ *          summary: update sigle admin 
+ *          description: update a admin data
+ *          tags:
+ *              - Admin
+ *          parameters:
+ *              - name: id
+ *                in: path    
+ *                description: id of the admin 
+ *                required: true  
+ *                schema:
+ *                  type: string
+ *              - in: body
+ *                name: admin
+ *                description : admin to update
+ *                schema:
+ *                  type: object
+ *                  properties:
+ *                      username:
+ *                          type: string
+ *                      email:
+ *                          type: string  
+ *                      firstname:
+ *                          type: string
+ *                      lastname:
+ *                          type: string
+ *                      phonenumber:
+ *                          type: string
+ *          responses:
+ *              200:
+ *                  description: sucess message
+ *              401:
+ *                  description: failure message
  *              404:
  *                  description: failure message
  */

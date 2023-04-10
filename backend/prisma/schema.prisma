@@ -10,8 +10,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Admin{
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  type          String @default("Admin")
+  username      String @unique
+  password      String
+  email         String @unique
+  phonenumber   String
+  createdAt     String?
+  updatedAt     String?
+}
 model User {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  type        String    @default("User")
   firstname   String
   lastname    String
   username    String  @unique
@@ -46,11 +57,6 @@ model Reviews{
   createdAt String?
   updatedAt String?
 }
-enum paymentMethod{
-  CASH
-  CARD
-  PhonePay
-}
 model Booked{
   id   String @id @default(auto()) @map("_id") @db.ObjectId
   username String
@@ -65,4 +71,10 @@ model Booked{
   paymentmethod paymentMethod @default(CARD)
   createdAt String?
   updatedAt String? 
+}
+
+enum paymentMethod{
+  CASH
+  CARD
+  PhonePay
 }

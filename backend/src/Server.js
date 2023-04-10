@@ -2,7 +2,7 @@ const express = require("express");
 const adminrouter = require("./Adminrouter");
 const Userrouter = require("./UserRouter");
 const { createUser, signinUser } = require("./Controllers/User");
-const { protect } = require("./modules/auth");
+const { protect } = require("./modules/Auth");
 const customCors = require("./Controllers/Cors");
 
 const app = express();
