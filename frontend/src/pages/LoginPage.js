@@ -20,7 +20,7 @@ const LoginPage = () => {
         .then(response => response.json())
         .then(data => {alert(data.message); 
             console.log(data.token);
-            document.cookie="token="+" "+data.token})
+            document.cookie="token=Bearer: "+data.token})
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
