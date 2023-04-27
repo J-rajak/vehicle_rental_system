@@ -1,127 +1,31 @@
-import { Row, Col, Container, Image, ListGroup, Form, Button, Alert } from "react-bootstrap";
-import AddedToCartMessageComponent from "../components/AddedToCartMessageComponent";
-import { Rating } from "react-simple-star-rating";
-import ImageZoom from "js-image-zoom";
-import {useEffect} from "react";
-const ProductDetailsPage = () => {
+import ProductDetailsPageComponent from "./components/ProductDetailsPageComponent";
+import { useEffect } from "react";
 
-    useEffect(() => {
-        var options = {
-            // width: 400,
-            // zoomWidth: 500,
-            // fillContainer: true,
-            // zoomPosition: "bottom",
-            scale: 2,
-            offset: {vertical: 0, horizontal: 0},
-        }
-        new ImageZoom(document.getElementById("first"), options)
-        new ImageZoom(document.getElementById("second"), options)
-        new ImageZoom(document.getElementById("third"), options)
-        new ImageZoom(document.getElementById("fourth"), options)
+import { useDispatch, useSelector } from "react-redux";
 
-    });
-    return (
-        <Container>
-            <AddedToCartMessageComponent />
-            <Row className="mt-5">
-                <Col style={{zIndex: 1}} md={4}>
-                    <div id="first">
-                        <Image crossOrigin="anonymous" fluid src="/images/car1.jpg" />
-                    </div>
-                    <br />
-                    <div id="second">
-                        <Image fluid src="/images/car2.jpg" />
-                    </div>
-                    <br />
-                    <div id="third">
-                        <Image fluid src="/images/car3.jpg" />
-                    </div>
-                    <br />
-                    <div id="fourth">
-                        <Image fluid src="/images/car4.jpg" />
-                    </div>
-                    <br />
 
-                </Col>
-                <Col md={8}>
-                    <Row>
-                        <Col md={8}>
-                            <ListGroup variant="flush">
-                                <ListGroup.Item><h1>Product Name</h1>
+import { addToCart } from "../redux/actions/cartActions";
+import axios from 'axios'
 
-                                </ListGroup.Item>
-                                <ListGroup.Item>
-                                    <Rating readonly size={20}
-                                        initialValue={4} /> (1)
-                                </ListGroup.Item>
-                                <ListGroup.Item>Price <span className="fw-bold">$345</span>
-
-                                </ListGroup.Item>
-                                <ListGroup.Item>potrta anunf huns
-
-                                </ListGroup.Item>
-                            </ListGroup>
-                        </Col>
-                        <Col md={4}>
-                            <ListGroup>
-                                <ListGroup.Item>status: in stock</ListGroup.Item>
-                                <ListGroup.Item>Price <span className="fw-bold">$343</span></ListGroup.Item>
-                                <ListGroup.Item>
-                                    Quantity:
-                                    <Form.Select size="lg" aria-label="Default select example">
-                                        <option>1</option>
-                                        <option value="1">2</option>
-                                        <option value="2">3</option>
-                                        <option value="3">4</option>
-                                    </Form.Select>
-                                </ListGroup.Item>
-                                <ListGroup.Item>
-                                    <Button variant="danger">Add to Cart</Button>
-                                </ListGroup.Item>
-                            </ListGroup>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col className="mt-5">
-                            <h5>Reviews</h5>
-                            <ListGroup variant="flush">
-                                {Array.from({ length: 10 }).map((item, idx) => (
-                                    <ListGroup.Item key={idx}>
-                                        John Doe <br />
-                                        <Rating readonly size={20} initialValue={4} />
-                                        <br />
-                                        20-03-2001 <br />
-                                        The purpose of lorem ipsum is to create a
-                                        natural looking block of text that doesn't
-                                        distract from the layout.
-                                    </ListGroup.Item>
-                                ))}
-
-                            </ListGroup>
-                        </Col>
-                    </Row>
-                    <hr />
-                    <Alert variant="danger">Login first to write a review</Alert>
-                    <Form>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Form.Label>Write a review</Form.Label>
-                            <Form.Control as="textarea" rows={3} />
-                        </Form.Group>
-                        <Form.Select aria-label="Default select example">
-                            <option>Your rating</option>
-                            <option value="5">5 (very good)</option>
-                            <option value="4">4 (good)</option>
-                            <option value="3">3 (average)</option>
-                            <option value="2">2 (bad)</option>
-                            <option value="1">1 (awful)</option>
-                        </Form.Select>
-                        <Button className="mb-3 mt-3" variant="primary">Primary</Button>
-                    </Form>
-                </Col>
-            </Row>
-        </Container>
-
-    )
+const getProductDetails = async (id) => {
+    const { data } = await axios.get(`/api/products/get-one/${id}`);
+    return data
 }
 
+const writeReviewApiRequest = async (productId, formInputs) => {
+    const { data } = await axios.post(`/api/users/review/${productId}`, { ...formInputs });
+    return data;
+}
+
+const ProductDetailsPage = () => {
+
+    const dispatch = useDispatch()
+
+    const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
+
+
+    return <ProductDetailsPageComponent addToCartReduxAction={addToCart} reduxDispatch={dispatch} getProductDetails={getProductDetails} userInfo={userInfo} writeReviewApiRequest={writeReviewApiRequest} />;
+};
+
 export default ProductDetailsPage;
+

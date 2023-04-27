@@ -1,88 +1,98 @@
-import { Row, Col, Container, Form, Alert, ListGroup, Button } from "react-bootstrap";
-import CartItemComponent from "../../components/CartItemComponent";
-const UserOrderDetailsPage = () => {
-    return (
+import UserOrderDetailsPageComponent from "./components/UserOrderDetailsPageComponent";
+import { useSelector } from "react-redux";
+import axios from 'axios'
+import { loadScript } from "@paypal/paypal-js";
 
-        <Container fluid>
-            <Row className="mt-4">
-                <h1>Order Details</h1>
-                <Col md={8}>
-                    <br />
-
-                    <Row>
-                        <Col md={6}>
-                            <h2>Shipping</h2>
-                            <b>Name</b>: John Doe <br />
-                            <b>Address</b>: 3242 Mayflower St. Los Angeles, CA 90843 <br />
-                            <b>Phone</b>: 9872378123
-                        </Col>
-                        <Col md={6}>
-                            <h2>Payment method</h2>
-                            <Form.Select disabled={false}>
-                                <option value="pp">
-                                    Paypal
-                                </option>
-                                <option value="cod">
-                                    Cash On Delivery(delivery maybe delayed)
-                                </option>
-                            </Form.Select>
-                        </Col>
-                        <Row>
-                            <Col>
-                                <Alert className="mt-3" variant="danger">
-                                    Not Delivered
-                                </Alert>
-                            </Col>
-
-                            <Col>
-                                <Alert className="mt-3" variant="success">
-                                    Paid on 2022-10-21
-                                </Alert>
-                            </Col>
-                        </Row>
-                    </Row>
-                    <br />
-                    <h2>Order items</h2>
-                    <ListGroup variant="flush">
-                        {Array.from({ length: 3 }).map((item, idx) => (
-                            <CartItemComponent key={idx} />
-                        ))}
-                    </ListGroup>
-                </Col>
-
-                <Col md={4}>
-                    <ListGroup>
-                        <ListGroup.Item>
-                            <h3>Order summary</h3>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Items price (after tax): <span className="fw-bold">$873</span>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Shipping: <span className="fw-bold">Included</span>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Tax: <span className="fw-bold">Included</span>
-                        </ListGroup.Item>
-                        <ListGroup.Item className="text-danger">
-                            Total price: <span className="fw-bold">$999</span>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            <div className="d-grid gap-2">
-                                <Button size="lg" variant="danger" type="button">
-                                    Pay for the order
-                                </Button>
-                            </div>
-
-                        </ListGroup.Item>
-                    </ListGroup>
-
-                </Col>
-            </Row>
-
-        </Container>
-
-    );
+const getOrder = async (orderId) => {
+    const { data } = await axios.get("/api/orders/user/" + orderId);
+    return data;
 }
 
+const loadPayPalScript = (cartSubtotal, cartItems, orderId, updateStateAfterOrder) => {
+    loadScript({ "client-id": "AXyumn4h2TWYiR79fZUPM7xGJeOiSfk3Dsa01YharpajxqH98aFnJ41h33C5RS78-Lo4ZtTDK1B1xGoD" })
+        .then(paypal => {
+            paypal
+                .Buttons(buttons(cartSubtotal, cartItems, orderId, updateStateAfterOrder))
+                .render("#paypal-container-element");
+        })
+        .catch(err => {
+            console.error("failed to load the PayPal JS SDK script", err);
+        })
+}
+
+const buttons = (cartSubtotal, cartItems, orderId, updateStateAfterOrder) => {
+    return {
+        createOrder: function (data, actions) {
+            return actions.order.create({
+                purchase_units: [
+                    {
+                        amount: {
+                            value: cartSubtotal,
+                            breakdown: {
+                                item_total: {
+                                    currency_code: "USD",
+                                    value: cartSubtotal,
+                                }
+                            }
+                        },
+                        items: cartItems.map(product => {
+                            return {
+                                name: product.name,
+                                unit_amount: {
+                                    currency_code: "USD",
+                                    value: product.price,
+                                },
+                                quantity: product.quantity,
+                            }
+                        })
+                    }
+                ]
+            })
+        },
+        onCancel: onCancelHandler,
+        onApprove: function (data, actions) {
+            return actions.order.capture().then(function (orderData) {
+                var transaction = orderData.purchase_units[0].payments.captures[0];
+                if (transaction.status === "COMPLETED" && Number(transaction.amount.value) === Number(cartSubtotal)) {
+                    updateOrder(orderId)
+                        .then(data => {
+                            if (data.isPaid) {
+                                updateStateAfterOrder(data.paidAt);
+                            }
+                        })
+                        .catch((er) => console.log(er));
+                }
+            })
+        },
+        onError: onErrorHandler,
+    }
+}
+
+
+const onCancelHandler = function () {
+    console.log("cancel");
+}
+
+
+const onErrorHandler = function (err) {
+    console.log("error");
+}
+
+const updateOrder = async (orderId) => {
+    const { data } = await axios.put("/api/orders/paid/" + orderId);
+    return data;
+}
+
+const UserOrderDetailsPage = () => {
+    const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
+
+    const getUser = async () => {
+        const { data } = await axios.get("/api/users/profile/" + userInfo._id);
+        return data;
+    }
+
+    return <UserOrderDetailsPageComponent userInfo={userInfo} getUser={getUser} getOrder={getOrder} loadPayPalScript={loadPayPalScript} />;
+};
+
 export default UserOrderDetailsPage;
+
