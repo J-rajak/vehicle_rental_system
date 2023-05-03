@@ -1,5 +1,6 @@
-const connectDB = require("../config/db")
-connectDB()
+require("dotenv").config();
+const connectDB = require("../config/db");
+connectDB();
 
 const categoryData = require("./categories")
 const productData = require("./products")
