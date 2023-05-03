@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Admin{
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  type          String @default("Admin")
+  username      String @unique
+  password      String
+  email         String @unique
+  phonenumber   String
+  createdAt     String?
+  updatedAt     String?
+}
+model User {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  type        String    @default("User")
+  firstname   String
+  lastname    String
+  username    String  @unique
+  password    String
+  email       String    @unique
+  phonenumber String
+  createdAt   String?  
+  updatedAt   String?  
+}
+
+model Driver {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  phonenumber String
+  address String
+}
+
+model Vehicle {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  model String
+  type String
+  licenseplate String
+}
+
+model Reviews{
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String
+  username String
+  review String
+  rating Int
+  createdAt String?
+  updatedAt String?
+}
+model Booked{
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  username String
+  userphonenumber String
+  driverincluded Boolean
+  carname String
+  carlicenseplate String
+  cartype String
+  dropofflocation String
+  rentedfrom String 
+  rentedtill String
+  paymentmethod paymentMethod @default(CARD)
+  createdAt String?
+  updatedAt String? 
+}
+
+enum paymentMethod{
+  CASH
+  CARD
+  PhonePay
+}
